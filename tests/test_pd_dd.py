@@ -21,5 +21,10 @@ def test_print_dd(simple_df):
     sys.stdout = capturedOutput
     print(simple_df.dd)
     sys.stdout = sys.__stdout__
-    assert 'aardvark' in capturedOutput.getvalue()
+    assert 'rating' in capturedOutput.getvalue()
+
+def test_set_description(simple_df):
+    description = 'Rating out of 5'
+    simple_df.dd.set_desc('rating',description)
+    assert simple_df.dd._data_dict.loc['rating','description'] == description
 
