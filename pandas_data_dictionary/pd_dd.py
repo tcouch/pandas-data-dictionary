@@ -11,9 +11,13 @@ class DataDictionaryAccessor():
         return self._data_dict.__repr__()
 
     def reset_data_dict(self):
-        self._data_dict = pd.DataFrame()
-        self._data_dict.reindex(self._df.columns)
-        self._data_dict['datatype'] = self._df.dtypes.astype(str)
+        data_dict = pd.DataFrame()
+        data_dict.reindex(self._df.columns)
+        data_dict['datatype'] = self._df.dtypes.astype(str)
+        data_dict['min_value'] = np.NaN
+        data_dict['max_value'] = np.NaN
+        self._data_dict = data_dict
+
 
     @property
     def datatype(self):
@@ -59,8 +63,11 @@ class DataDictionaryAccessor():
 
     @property
     def validation(self):
-        validation_columns = ['min_value']
+        validation_columns = ['min_value','max_value']
         return self._data_dict[validation_columns]
 
     def set_min_value(self,var:str,value):
-        self.set_var_property(var,'min_value',float(value))
+        self.set_var_property(var,'min_value',float(value),dtype=float)
+
+    def set_max_value(self,var:str,value):
+        self.set_var_property(var,'max_value',float(value),dtype=float)
