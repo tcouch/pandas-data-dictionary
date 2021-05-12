@@ -94,8 +94,14 @@ class DataDictionaryAccessor():
     def set_min_length(self,var:str,value):
         self.set_var_property(var,'min_length',int(value),dtype=int)
 
+    def validate_min_length(self,var,value):
+        return self._df[var].str.len() >= float(value)
+
     def set_max_length(self,var:str,value):
         self.set_var_property(var,'max_length',int(value),dtype=int)
+
+    def validate_max_length(self,var,value):
+        return self._df[var].str.len() <= float(value)
 
     def set_categories(self,var:str,category_list=None,ordered=False):
         if not category_list:
