@@ -6,6 +6,9 @@ class DataDictionaryAccessor():
         self._df = pandas_obj
         self.reset_data_dict()
 
+    def __repr__(self):
+        return self._data_dict.__repr__()
+
     def reset_data_dict(self):
         self._data_dict = pd.DataFrame()
         self._data_dict.reindex(self._df.columns)
