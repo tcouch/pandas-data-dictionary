@@ -1,4 +1,5 @@
 import pandas as pd
+from pandas.api.types import CategoricalDtype
 import numpy as np
 
 @pd.api.extensions.register_dataframe_accessor("dd")
@@ -74,7 +75,11 @@ class DataDictionaryAccessor():
         self.set_var_property(var,'max_value',float(value),dtype=float)
 
     def set_categories(self,var:str,category_list=None,ordered=False):
-        self._df[var] = self._df[var].astype('category')
+        if not category_list:
+            # get a list from existing data column
+            category_list = list(self._df.var.unique())
+        cat_type = CategoricalDtype(categories=category_list)
+        self._df[var] = self._df[var].astype(cat_type)
         self._data_dict.at[var,'datatype'] = 'Categorical'
         category_list = list(self._df[var].dtype.categories)
         category_list_string = '|'.join(category_list)
