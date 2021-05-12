@@ -23,7 +23,7 @@ class DataDictionaryAccessor():
     def description(self):
         return self._data_dict['description']
 
-    def set_desc(self,var:'df column name',desc:'description'):
+    def set_desc(self,var:str,desc:str):
         if 'description' not in self._data_dict:
             self._data_dict['description'] = ""
         self._data_dict.at[var,'description'] = desc
