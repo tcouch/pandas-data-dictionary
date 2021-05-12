@@ -69,3 +69,10 @@ def test_make_categorical(simple_df):
     without ordering"""
     simple_df.dd.set_categories('continent')
     assert type(simple_df['continent'].dtype) == pd.core.dtypes.dtypes.CategoricalDtype
+
+def test_make_categorical_with_list(simple_df):
+    """Convert variable to category type and provide category list"""
+    category_list = ["Asia","Europe","North America","South America", 
+                     "Africa", "Australasia", "Antarctica"]
+    simple_df.dd.set_categories('continent',category_list=category_list,ordered=False)
+    assert list(simple_df['continent'].dtype.categories) == category_list
