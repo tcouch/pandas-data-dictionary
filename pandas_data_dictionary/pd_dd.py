@@ -118,6 +118,19 @@ class DataDictionaryAccessor():
     def validate_categories(self,var,value):
         return self._df[var].str.contains(value,na=False)
 
+    def validate_all(self):
+        # Get list of variables in data dictionary
+        vars = self._data_dict.index.to_list()
+        # Test if all variables are valid
+        var_validity_dict = {var:self.validate(var).all() for var in vars}
+        df_is_valid = all([value for value in var_validity_dict.values()])
+        if df_is_valid:
+            print("All columns are valid")
+        else:
+            print("The following columns contain invalid data:")
+            for var, valid in var_validity_dict.items():
+                if not valid: print(var)
+
     def validate(self,var:str=None):
         # Get validation parameters for var
         validation_params = self.validation.loc[var].astype(str).to_dict()
@@ -130,5 +143,9 @@ class DataDictionaryAccessor():
             valid_series = getattr(self,'validate_' + parameter)(var,value)
             # Append series to df
             series_collection.append(valid_series)
+        # If series_collection is empty add a dummy series with all True
+        if not series_collection:
+            num_rows = self._df.shape[0]
+            series_collection.append(pd.Series([True for i in range(num_rows)]))
         # Finally use all to create new series representing each row
         return pd.concat(series_collection,axis=1).all(axis=1)
