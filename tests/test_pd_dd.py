@@ -26,7 +26,7 @@ def test_print_dd(simple_df):
 def test_set_description(simple_df):
     description = 'Rating out of 5'
     simple_df.dd.set_desc('rating',description)
-    assert simple_df.dd._data_dict.at['rating','description'] == description
+    assert simple_df.dd.description['rating'] == description
 
 def test_if_property_not_set_raise_exception(simple_df):
     with pytest.raises(KeyError):
@@ -37,4 +37,10 @@ def test_set_title(simple_df):
     """test setting friendly name for use in charts etc."""
     title = "Is the item in stock?"
     simple_df.dd.set_title('in_stock',title)
-    assert simple_df.dd._data_dict.at['in_stock','title'] == title
+    assert simple_df.dd.title['in_stock'] == title
+
+def test_set_units(simple_df):
+    """test setting units"""
+    units = 'kg'
+    simple_df.dd.set_units('weight',units)
+    assert simple_df.dd.units['weight'] == units
