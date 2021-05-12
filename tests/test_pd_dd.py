@@ -101,3 +101,12 @@ def test_validate_min_max_length(validation_df):
     validation_df.dd.set_max_length('name',7)
     validation_series = validation_df.dd.validate('name')
     assert (validation_series == pd.Series([False,True,True,False,True,False])).all()
+
+def test_validate_categories(validation_df):
+    category_list = ["Asia","Europe","North America","South America", 
+                     "Africa", "Australasia", "Antarctica"]
+    validation_df.dd.set_categories('continent',
+                                    category_list=category_list,
+                                    ordered=False)
+    validation_series = validation_df.dd.validate('continent')
+    assert (validation_series == pd.Series([True,True,True,True,True,False])).all()
