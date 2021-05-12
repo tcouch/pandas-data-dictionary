@@ -1,4 +1,6 @@
+import io
 import pytest
+import sys
 
 import pandas as pd
 from pandas_data_dictionary import pd_dd
@@ -13,4 +15,11 @@ def test_access_dd_extension(simple_df):
 
 def test_datatypes_property(simple_df):
     simple_df.dd.datatypes
+
+def test_print_dd(simple_df):
+    capturedOutput = io.StringIO()
+    sys.stdout = capturedOutput
+    print(simple_df.dd)
+    sys.stdout = sys.__stdout__
+    assert 'aardvark' in capturedOutput.getvalue()
 
