@@ -19,6 +19,8 @@ class DataDictionaryAccessor():
         data_dict['max_value'] = np.NaN
         data_dict['categories'] = ""
         data_dict['ordered'] = False
+        data_dict['min_length'] = np.NaN
+        data_dict['max_length'] = np.NaN
         self._data_dict = data_dict
 
 
@@ -66,7 +68,8 @@ class DataDictionaryAccessor():
 
     @property
     def validation(self):
-        validation_columns = ['min_value','max_value','categories','ordered']
+        validation_columns = ['min_value','max_value','categories','ordered',
+                              'min_length','max_length']
         return self._data_dict[validation_columns]
 
     def set_min_value(self,var:str,value):
@@ -75,13 +78,19 @@ class DataDictionaryAccessor():
     def set_max_value(self,var:str,value):
         self.set_var_property(var,'max_value',float(value),dtype=float)
 
+    def set_min_length(self,var:str,value):
+        self.set_var_property(var,'min_length',int(value),dtype=int)
+
+    def set_max_length(self,var:str,value):
+        self.set_var_property(var,'max_length',int(value),dtype=int)
+
     def set_categories(self,var:str,category_list=None,ordered=False):
         if not category_list:
             # get a list from existing data column
             category_list = list(self._df[var].unique())
         cat_type = CategoricalDtype(categories=category_list,ordered=ordered)
         self._df[var] = self._df[var].astype(cat_type)
-        self.set_var_property(var,'datatype','Categorical')
+        self.set_var_property(var,'datatype','category')
         category_list = [str(x) for x in self._df[var].dtype.categories]
         category_list_string = '|'.join(category_list)
         self.set_var_property(var,'categories',category_list_string)
