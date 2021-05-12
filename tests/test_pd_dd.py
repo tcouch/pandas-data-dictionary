@@ -76,3 +76,11 @@ def test_make_categorical_with_list(simple_df):
                      "Africa", "Australasia", "Antarctica"]
     simple_df.dd.set_categories('continent',category_list=category_list,ordered=False)
     assert list(simple_df['continent'].dtype.categories) == category_list
+
+def test_make_categorical_with_ordered_list(simple_df):
+    """Convert variable to category type, providing an ordered list"""
+    category_list = [1,2,3,4,5]
+    simple_df.dd.set_categories('rating',category_list=category_list,ordered=True)
+    target_cat_type = pd.api.types.CategoricalDtype(categories=category_list, 
+                                                    ordered=True)
+    assert simple_df['rating'].dtype == target_cat_type
