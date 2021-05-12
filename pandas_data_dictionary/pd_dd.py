@@ -4,6 +4,16 @@ import numpy as np
 
 @pd.api.extensions.register_dataframe_accessor("dd")
 class DataDictionaryAccessor():
+
+    validation_columns = {
+            'min_value':np.NaN,
+            'max_value':np.NaN,
+            'categories':"",
+            'ordered':False,
+            'min_length':np.NaN,
+            'max_length':np.NaN
+        }
+
     def __init__(self, pandas_obj):
         self._df = pandas_obj
         self.reset_data_dict()
@@ -15,12 +25,11 @@ class DataDictionaryAccessor():
         data_dict = pd.DataFrame()
         data_dict.reindex(self._df.columns)
         data_dict['datatype'] = self._df.dtypes.astype(str)
-        data_dict['min_value'] = np.NaN
-        data_dict['max_value'] = np.NaN
-        data_dict['categories'] = ""
-        data_dict['ordered'] = False
-        data_dict['min_length'] = np.NaN
-        data_dict['max_length'] = np.NaN
+
+        # Create validation columns (name, default value)
+        for column, default_value in DataDictionaryAccessor.validation_columns.items():
+            data_dict[column] = default_value
+
         self._data_dict = data_dict
 
 
@@ -68,15 +77,19 @@ class DataDictionaryAccessor():
 
     @property
     def validation(self):
-        validation_columns = ['min_value','max_value','categories','ordered',
-                              'min_length','max_length']
-        return self._data_dict[validation_columns]
+        return self._data_dict[self.validation_columns.keys()]
 
     def set_min_value(self,var:str,value):
         self.set_var_property(var,'min_value',float(value),dtype=float)
 
+    def validate_min_value(self,var,value):
+        return self._df[var] >= float(value)
+
     def set_max_value(self,var:str,value):
         self.set_var_property(var,'max_value',float(value),dtype=float)
+
+    def validate_max_value(self,var,value):
+        return self._df[var] <= float(value)
 
     def set_min_length(self,var:str,value):
         self.set_var_property(var,'min_length',int(value),dtype=int)
@@ -95,3 +108,18 @@ class DataDictionaryAccessor():
         category_list_string = '|'.join(category_list)
         self.set_var_property(var,'categories',category_list_string)
         self.set_var_property(var,'ordered',ordered)
+
+    def validate(self,var:str=None):
+        # Get validation parameters for var
+        validation_params = self.validation.loc[var].astype(str).to_dict()
+        # Remove those with default values
+        defaults = ['nan','','False']
+        validation_params = {k:v for k,v in validation_params.items() if v not in defaults}
+        # Call validation function for each validation parameter
+        series_collection = []
+        for parameter, value in validation_params.items():
+            valid_series = getattr(self,'validate_' + parameter)(var,value)
+            # Append series to df
+            series_collection.append(valid_series)
+        # Finally use all to create new series representing each row
+        return pd.concat(series_collection,axis=1).all(axis=1)
