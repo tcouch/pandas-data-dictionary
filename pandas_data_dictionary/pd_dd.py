@@ -18,6 +18,7 @@ class DataDictionaryAccessor():
         data_dict['min_value'] = np.NaN
         data_dict['max_value'] = np.NaN
         data_dict['categories'] = ""
+        data_dict['ordered'] = False
         self._data_dict = data_dict
 
 
@@ -65,7 +66,7 @@ class DataDictionaryAccessor():
 
     @property
     def validation(self):
-        validation_columns = ['min_value','max_value','categories']
+        validation_columns = ['min_value','max_value','categories','ordered']
         return self._data_dict[validation_columns]
 
     def set_min_value(self,var:str,value):
@@ -80,7 +81,8 @@ class DataDictionaryAccessor():
             category_list = list(self._df[var].unique())
         cat_type = CategoricalDtype(categories=category_list,ordered=ordered)
         self._df[var] = self._df[var].astype(cat_type)
-        self._data_dict.at[var,'datatype'] = 'Categorical'
+        self.set_var_property(var,'datatype','Categorical')
         category_list = [str(x) for x in self._df[var].dtype.categories]
         category_list_string = '|'.join(category_list)
         self.set_var_property(var,'categories',category_list_string)
+        self.set_var_property(var,'ordered',ordered)
