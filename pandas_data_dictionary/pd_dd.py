@@ -56,3 +56,11 @@ class DataDictionaryAccessor():
 
     def series_with_units(self,var):
         return self._df[var].astype(str) + ' ' + self._data_dict['units'][var]
+
+    @property
+    def validation(self):
+        validation_columns = ['min_value']
+        return self._data_dict[validation_columns]
+
+    def set_min_value(self,var:str,value):
+        self.set_var_property(var,'min_value',float(value))

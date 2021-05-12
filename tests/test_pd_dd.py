@@ -53,3 +53,8 @@ def test_series_with_units(simple_df):
     print(simple_df.dd.series_with_units('weight'))
     sys.stdout = sys.__stdout__
     assert '1.34 kg' in capturedOutput.getvalue()
+
+def test_set_min_value(simple_df):
+    min_val = 0.0
+    simple_df.dd.set_min_value('weight',min_val)
+    assert simple_df.dd.validation.min_value['weight'] == min_val

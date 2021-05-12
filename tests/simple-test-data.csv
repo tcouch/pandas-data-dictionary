@@ -1,5 +1,5 @@
-rating,weight,in_stock,name
-3,1.34,TRUE,strawberry
-4,3.4,FALSE,apple
-5,0.68,TRUE,grape
-3,2.45,TRUE,kiwi
+rating,weight,in_stock,name,continent
+3,1.34,TRUE,strawberry,North America
+4,3.4,FALSE,apple,Asia
+5,0.68,TRUE,grape,Europe
+3,2.45,TRUE,kiwi,Asia
