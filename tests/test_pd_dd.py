@@ -11,3 +11,6 @@ def simple_df():
 def test_access_dd_extension(simple_df):
     simple_df.dd
 
+def test_datatypes_property(simple_df):
+    simple_df.dd.datatypes
+
