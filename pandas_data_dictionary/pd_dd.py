@@ -78,9 +78,9 @@ class DataDictionaryAccessor():
         if not category_list:
             # get a list from existing data column
             category_list = list(self._df[var].unique())
-        cat_type = CategoricalDtype(categories=category_list)
+        cat_type = CategoricalDtype(categories=category_list,ordered=ordered)
         self._df[var] = self._df[var].astype(cat_type)
         self._data_dict.at[var,'datatype'] = 'Categorical'
-        category_list = list(self._df[var].dtype.categories)
+        category_list = [str(x) for x in self._df[var].dtype.categories]
         category_list_string = '|'.join(category_list)
         self.set_var_property(var,'categories',category_list_string)
