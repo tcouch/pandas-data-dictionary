@@ -53,3 +53,6 @@ class DataDictionaryAccessor():
 
     def set_units(self,var:str,units:str):
         self.set_var_property(var,'units',units)
+
+    def series_with_units(self,var):
+        return self._df[var].astype(str) + ' ' + self._data_dict['units'][var]
