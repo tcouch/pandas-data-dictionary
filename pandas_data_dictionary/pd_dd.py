@@ -29,6 +29,8 @@ class DataDictionaryAccessor():
 
     @property
     def description(self):
+        if 'description' not in self._data_dict:
+            raise KeyError('No descriptions have been set yet')
         return self._data_dict['description']
 
     def set_desc(self,var:str,desc:str):
@@ -36,6 +38,8 @@ class DataDictionaryAccessor():
 
     @property
     def title(self):
+        if 'title' not in self._data_dict:
+            raise KeyError('No titles have been set yet')
         return self._data_dict['title']
 
     def set_title(self,var:str,title:str):

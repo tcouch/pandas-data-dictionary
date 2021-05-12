@@ -28,6 +28,11 @@ def test_set_description(simple_df):
     simple_df.dd.set_desc('rating',description)
     assert simple_df.dd._data_dict.at['rating','description'] == description
 
+def test_if_property_not_set_raise_exception(simple_df):
+    with pytest.raises(KeyError):
+        simple_df.dd.description
+        simple_df.dd.title
+
 def test_set_title(simple_df):
     """test setting friendly name for use in charts etc."""
     title = "Is the item in stock?"
