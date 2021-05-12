@@ -114,6 +114,9 @@ class DataDictionaryAccessor():
         category_list_string = '|'.join(category_list)
         self.set_var_property(var,'categories',category_list_string)
         self.set_var_property(var,'ordered',ordered)
+        
+    def validate_categories(self,var,value):
+        return self._df[var].str.contains(value,na=False)
 
     def validate(self,var:str=None):
         # Get validation parameters for var
