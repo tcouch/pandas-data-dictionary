@@ -44,3 +44,12 @@ class DataDictionaryAccessor():
 
     def set_title(self,var:str,title:str):
         self.set_var_property(var,'title',title)
+
+    @property
+    def units(self):
+        if 'units' not in self._data_dict:
+            raise KeyError('No units have been set yet')
+        return self._data_dict['units']
+
+    def set_units(self,var:str,units:str):
+        self.set_var_property(var,'units',units)
