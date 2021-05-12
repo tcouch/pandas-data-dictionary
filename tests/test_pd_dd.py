@@ -10,6 +10,11 @@ def simple_df():
     df = pd.read_csv('tests/simple-test-data.csv')
     return df
 
+@pytest.fixture
+def validation_df():
+    df = pd.read_csv('tests/validation-test-data.csv')
+    return df
+
 def test_access_dd_extension(simple_df):
     simple_df.dd
 
@@ -84,3 +89,9 @@ def test_make_categorical_with_ordered_list(simple_df):
     target_cat_type = pd.api.types.CategoricalDtype(categories=category_list, 
                                                     ordered=True)
     assert simple_df['rating'].dtype == target_cat_type
+
+def test_validate_min_max_values(validation_df):
+    validation_df.dd.set_min_value('weight',0.0)
+    validation_df.dd.set_max_value('weight',10.0)
+    validation_series = validation_df.dd.validate('weight')
+    assert (validation_series == pd.Series([True,True,True,True,False,False])).all()
