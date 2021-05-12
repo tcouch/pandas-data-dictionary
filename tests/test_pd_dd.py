@@ -58,3 +58,8 @@ def test_set_min_value(simple_df):
     min_val = 0.0
     simple_df.dd.set_min_value('weight',min_val)
     assert simple_df.dd.validation.min_value['weight'] == min_val
+
+def test_set_max_value(simple_df):
+    max_val = 10.0
+    simple_df.dd.set_max_value('weight',max_val)
+    assert simple_df.dd.validation.max_value['weight'] == max_val
