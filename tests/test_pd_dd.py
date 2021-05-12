@@ -63,3 +63,9 @@ def test_set_max_value(simple_df):
     max_val = 10.0
     simple_df.dd.set_max_value('weight',max_val)
     assert simple_df.dd.validation.max_value['weight'] == max_val
+
+def test_make_categorical(simple_df):
+    """Convert variable to category type using existing data
+    without ordering"""
+    simple_df.dd.set_categories('continent')
+    assert type(simple_df['continent'].dtype) == pd.core.dtypes.dtypes.CategoricalDtype
