@@ -44,3 +44,12 @@ def test_set_units(simple_df):
     units = 'kg'
     simple_df.dd.set_units('weight',units)
     assert simple_df.dd.units['weight'] == units
+
+def test_series_with_units(simple_df):
+    """can we print a dataframe series with the associated units?"""
+    simple_df.dd.set_units('weight','kg')
+    capturedOutput = io.StringIO()
+    sys.stdout = capturedOutput
+    print(simple_df.dd.series_with_units('weight'))
+    sys.stdout = sys.__stdout__
+    assert '1.34 kg' in capturedOutput.getvalue()
