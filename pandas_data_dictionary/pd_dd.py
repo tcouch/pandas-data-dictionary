@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 
 @pd.api.extensions.register_dataframe_accessor("dd")
 class DataDictionaryAccessor():
@@ -15,5 +16,14 @@ class DataDictionaryAccessor():
         self._data_dict['datatype'] = self._df.dtypes.astype(str)
 
     @property
-    def datatypes(self):
+    def datatype(self):
         return self._data_dict['datatype']
+
+    @property
+    def description(self):
+        return self._data_dict['description']
+
+    def set_desc(self,var:'df column name',desc:'description'):
+        if 'description' not in self._data_dict:
+            self._data_dict['description'] = ""
+        self._data_dict.at[var,'description'] = desc

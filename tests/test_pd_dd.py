@@ -26,5 +26,5 @@ def test_print_dd(simple_df):
 def test_set_description(simple_df):
     description = 'Rating out of 5'
     simple_df.dd.set_desc('rating',description)
-    assert simple_df.dd._data_dict.loc['rating','description'] == description
+    assert simple_df.dd._data_dict.at['rating','description'] == description
 
