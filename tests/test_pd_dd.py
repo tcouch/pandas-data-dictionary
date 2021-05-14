@@ -113,5 +113,6 @@ def test_validate_categories(validation_df):
 
 def test_write_data_dict(simple_df, tmp_path):
     outfile = tmp_path / 'data_dict.csv'
-    simple_df.dd.to_csv()
-    assert pd.read_csv(outfile) == simple_df.dd
+    simple_df.dd.to_csv(outfile)
+    read_data_dict = pd.read_csv(outfile, index_col=0)
+    assert read_data_dict.datatype.equals(simple_df.dd._data_dict.datatype)

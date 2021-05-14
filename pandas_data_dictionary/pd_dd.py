@@ -149,3 +149,6 @@ class DataDictionaryAccessor():
             series_collection.append(pd.Series([True for i in range(num_rows)]))
         # Finally use all to create new series representing each row
         return pd.concat(series_collection,axis=1).all(axis=1)
+
+    def to_csv(self, outfile):
+        self._data_dict.to_csv(outfile)
