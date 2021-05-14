@@ -110,3 +110,8 @@ def test_validate_categories(validation_df):
                                     ordered=False)
     validation_series = validation_df.dd.validate('continent')
     assert (validation_series == pd.Series([True,True,True,True,True,False])).all()
+
+def test_write_data_dict(simple_df, tmp_path):
+    outfile = tmp_path / 'data_dict.csv'
+    simple_df.dd.to_csv()
+    assert pd.read_csv(outfile) == simple_df.dd
